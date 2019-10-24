@@ -1,6 +1,8 @@
 import {Input} from './models/input.js';
 import {Spaceship} from './models/spaceship.js';
 import {background} from './constants.js';
+import {EnemySpaceShip} from './models/enemy_spaceship.js'
+import {SpaceshipLaser} from './models/spaceship_laser.js'
 
 export const count_seconds = (old_time) => {
 
@@ -44,4 +46,12 @@ export const initial_game_state = (app) => {
         now,
         tilingSprite
     }
+}
+
+export const on_game_lose = (app) => {
+    app.stage.children.forEach(child => {
+        if(child instanceof Spaceship || child instanceof SpaceshipLaser || child instanceof EnemySpaceShip)
+            app.stage.removeChild(child);
+    });
+    document.getElementById('menu').style.display = "block";
 }

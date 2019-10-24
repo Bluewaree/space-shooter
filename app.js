@@ -5,13 +5,15 @@ import {Input} from './models/input.js'
 import {SpaceshipLaser} from './models/spaceship_laser.js'
 import {EnemySpaceShip} from './models/enemy_spaceship.js'
 import {Spaceship} from './models/spaceship.js'
-import {count_seconds, initial_game_state} from './helpers.js';
+import {count_seconds, initial_game_state, on_game_lose} from './helpers.js';
 
 let { input,kill_count,spaceship,current_seconds, now, tilingSprite} = initial_game_state(app);
 
 // Game life cycle 
 app.ticker.add((delta) => {
     tilingSprite.tilePosition.x -= 5; // Scrolling background
+
+    // Enters when the game is played
     if(input.start && !spaceship.lost){
         
         document.getElementById('menu').style.display = "none";
@@ -29,15 +31,9 @@ app.ticker.add((delta) => {
         }
     }
 
-    if(spaceship.lost)
-        on_game_lose();
+    // Enters when the player loses the game 
+    if(spaceship.lost){
+        on_game_lose(app);
+        ({ input,kill_count,spaceship,current_seconds, now, tilingSprite} = initial_game_state(app));
+    }
 });
-
-const on_game_lose = () => {
-    app.stage.children.forEach(child => {
-        if(child instanceof Spaceship || child instanceof SpaceshipLaser || child instanceof EnemySpaceShip)
-            app.stage.removeChild(child);
-    });
-    ({ input,kill_count,spaceship,current_seconds, now, tilingSprite} = initial_game_state(app));
-    document.getElementById('menu').style.display = "block";
-}
