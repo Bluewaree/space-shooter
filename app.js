@@ -27,3 +27,21 @@ app.stage.addChild(new Spaceship(app));
 let current_seconds = -1;
 let now = new Date().getTime();
 
+// Game life cycle 
+app.ticker.add((delta) => {
+    tilingSprite.tilePosition.x -= 5; // Scrolling background
+
+    // Updating game elements
+    app.stage.children.forEach(child => {
+        if(child instanceof Spaceship || child instanceof SpaceshipLaser || child instanceof EnemySpaceShip)
+            child.update(delta,app,kb);
+    });
+
+    // Adding ennemies ever 2 seconds
+    let seconds = count_seconds(now);
+    if(seconds & 1 == 1 && (seconds != current_seconds)){
+        app.stage.addChild(new EnemySpaceShip(app))
+        current_seconds = seconds;
+    }
+});
+
