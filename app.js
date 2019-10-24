@@ -1,7 +1,6 @@
 const app = new PIXI.Application();
 document.body.appendChild(app.view);
 
-import {Input} from './models/input.js'
 import {SpaceshipLaser} from './models/spaceship_laser.js'
 import {EnemySpaceShip} from './models/enemy_spaceship.js'
 import {Spaceship} from './models/spaceship.js'
