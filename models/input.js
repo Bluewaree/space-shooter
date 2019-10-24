@@ -1,4 +1,4 @@
-export class Keyboard {
+export class Input {
     constructor(){
         this.pressed = {};
         this.held;
@@ -21,6 +21,9 @@ export class Keyboard {
                 this.held = false;
             }
             this.pressed[key] = false;
+        })
+
+        document.addEventListener('click', (e) => {
         })
     }
 }

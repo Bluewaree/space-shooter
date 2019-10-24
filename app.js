@@ -1,16 +1,16 @@
 const app = new PIXI.Application();
 document.body.appendChild(app.view);
 
-import {Keyboard} from './models/keyboard.js'
+import {Input} from './models/input.js'
 import {SpaceshipLaser} from './models/spaceship_laser.js'
 import {EnemySpaceShip} from './models/enemy_spaceship.js'
 import {Spaceship} from './models/spaceship.js'
 import {texture} from './constants.js';
 import {count_seconds} from './helpers.js';
 
-// Initializing keyboard listeners
-let kb = new Keyboard()
-kb.watch();
+// Initializing Input listeners
+let input = new Input()
+input.watch();
 
 // Initializing background
 const tilingSprite = new PIXI.TilingSprite(
@@ -38,7 +38,7 @@ app.ticker.add((delta) => {
     // Updating game elements
     app.stage.children.forEach(child => {
         if(child instanceof Spaceship || child instanceof SpaceshipLaser || child instanceof EnemySpaceShip)
-            child.update(delta,app,kb,kill_count);
+            child.update(delta,app,input,kill_count);
     });
 
     // Adding ennemies ever 2 seconds
