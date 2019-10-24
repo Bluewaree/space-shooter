@@ -12,7 +12,7 @@ export class SpaceshipLaser extends PIXI.Sprite {
         this.velocity = 10;
     }
 
-    update(delta,app){
+    update(delta,app,_,kill_count){
         this.position.x += delta * this.velocity;
         if(this.position.x > app.screen.width-edge)
             app.stage.removeChild(this);
@@ -24,6 +24,9 @@ export class SpaceshipLaser extends PIXI.Sprite {
                     
                     app.stage.removeChild(this);
                     app.stage.removeChild(child);
+                    let count = kill_count.text.match(/\d+/)[0];
+                    count++;
+                    kill_count.setText('Enemies killed: '+ count);
             }
         });
     }

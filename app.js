@@ -19,9 +19,13 @@ const tilingSprite = new PIXI.TilingSprite(
     app.screen.height,
 );
 
+// Kill count text
+let kill_count = new PIXI.Text('Enemies killed: 0',{fontFamily : 'Arial', fontSize: 18, fill : 0xffffff, align : 'center'});
+
 // Adding background and first character to stage
 app.stage.addChild(tilingSprite);
 app.stage.addChild(new Spaceship(app));
+app.stage.addChild(kill_count);
 
 // Defining variables
 let current_seconds = -1;
@@ -34,7 +38,7 @@ app.ticker.add((delta) => {
     // Updating game elements
     app.stage.children.forEach(child => {
         if(child instanceof Spaceship || child instanceof SpaceshipLaser || child instanceof EnemySpaceShip)
-            child.update(delta,app,kb);
+            child.update(delta,app,kb,kill_count);
     });
 
     // Adding ennemies ever 2 seconds
