@@ -11,6 +11,7 @@ export class Spaceship extends PIXI.Sprite {
         this.anchor.y = 0.5;
         this.anchor.x = 0.5;
         this.scale.set(0.7,0.7);
+        this.lost = false;
     }
 
     update(delta, app, kb){
@@ -34,6 +35,7 @@ export class Spaceship extends PIXI.Sprite {
                 && Math.abs(child.position.x - this.position.x) < this.width){
                     
                     app.stage.removeChild(this);
+                    this.lost=true;
             }
         });
     }

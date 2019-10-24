@@ -5,47 +5,39 @@ import {Input} from './models/input.js'
 import {SpaceshipLaser} from './models/spaceship_laser.js'
 import {EnemySpaceShip} from './models/enemy_spaceship.js'
 import {Spaceship} from './models/spaceship.js'
-import {texture} from './constants.js';
-import {count_seconds} from './helpers.js';
+import {count_seconds, initial_game_state} from './helpers.js';
 
-// Initializing Input listeners
-let input = new Input()
-input.watch();
-
-// Initializing background
-const tilingSprite = new PIXI.TilingSprite(
-    texture,
-    app.screen.width,
-    app.screen.height,
-);
-
-// Kill count text
-let kill_count = new PIXI.Text('Enemies killed: 0',{fontFamily : 'Arial', fontSize: 18, fill : 0xffffff, align : 'center'});
-
-// Adding background and first character to stage
-app.stage.addChild(tilingSprite);
-app.stage.addChild(new Spaceship(app));
-app.stage.addChild(kill_count);
-
-// Defining variables
-let current_seconds = -1;
-let now = new Date().getTime();
+let { input,kill_count,spaceship,current_seconds, now, tilingSprite} = initial_game_state(app);
 
 // Game life cycle 
 app.ticker.add((delta) => {
     tilingSprite.tilePosition.x -= 5; // Scrolling background
+    if(input.start && !spaceship.lost){
+        
+        document.getElementById('menu').style.display = "none";
+        // Updating game elements
+        app.stage.children.forEach(child => {
+            if(child instanceof Spaceship || child instanceof SpaceshipLaser || child instanceof EnemySpaceShip)
+                child.update(delta,app,input,kill_count);
+        });
 
-    // Updating game elements
-    app.stage.children.forEach(child => {
-        if(child instanceof Spaceship || child instanceof SpaceshipLaser || child instanceof EnemySpaceShip)
-            child.update(delta,app,input,kill_count);
-    });
-
-    // Adding ennemies ever 2 seconds
-    let seconds = count_seconds(now);
-    if(seconds & 1 == 1 && (seconds != current_seconds)){
-        app.stage.addChild(new EnemySpaceShip(app))
-        current_seconds = seconds;
+        // Adding ennemies ever 2 seconds
+        let seconds = count_seconds(now);
+        if(seconds & 1 == 1 && (seconds != current_seconds)){
+            app.stage.addChild(new EnemySpaceShip(app))
+            current_seconds = seconds;
+        }
     }
+
+    if(spaceship.lost)
+        on_game_lose();
 });
 
+const on_game_lose = () => {
+    app.stage.children.forEach(child => {
+        if(child instanceof Spaceship || child instanceof SpaceshipLaser || child instanceof EnemySpaceShip)
+            app.stage.removeChild(child);
+    });
+    ({ input,kill_count,spaceship,current_seconds, now, tilingSprite} = initial_game_state(app));
+    document.getElementById('menu').style.display = "block";
+}

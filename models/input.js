@@ -2,6 +2,7 @@ export class Input {
     constructor(){
         this.pressed = {};
         this.held;
+        this.start=false;
     }
 
     watch(){
@@ -24,6 +25,11 @@ export class Input {
         })
 
         document.addEventListener('click', (e) => {
+            if (e.target.className=="start")
+                this.start=true;
+            
+            if (e.target.className=="exit")
+                window.location.href = "https://www.playngo.com/";
         })
     }
 }

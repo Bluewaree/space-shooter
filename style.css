@@ -19,9 +19,9 @@ body {
     cursor: pointer;
   }
 
-  .menu {
+  #menu {
     margin: 0 auto;
-    width: 150px;
+    width: 200px;
     text-align: center;
     position: absolute;
   }
