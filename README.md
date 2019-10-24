@@ -1,4 +1,4 @@
-Space shooter 2D game
+Space shooter 2D game using PixiJs
 
 ## Constructions
 ```
